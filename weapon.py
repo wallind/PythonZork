@@ -2,6 +2,7 @@ from random import *
 
 class Weapon(object):
 	"""A class to store Weapon information."""
+	"""mason was here"""
 	def __init__(self, typ):
 		"""WeaponConstructor"""
 		self.weaponType = typ
