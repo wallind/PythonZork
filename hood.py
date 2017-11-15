@@ -5,7 +5,7 @@ class Neighborhood(object):
 	"""Class to neighborhoodafdsjvcasdnfqwpngfqwf"""
 	def __init__(self):
 		"""Neighborhood Constructor."""
-		self.w, self.h = randrange(2, 6), randrange(2, 6)
+		self.w, self.h = randrange(3, 7), randrange(3, 7)
 		
 		self.grid = [[0 for x in range(self.w)] for y in range(self.h)]
 		
@@ -23,12 +23,8 @@ class House(object):
 		self.monsters = []
 		numMonsters = randrange(0, 11)
 		
-		#print (numMonsters)
-		
 		for i in range (numMonsters):
 			monsterChoice = randrange(0, 5)
-			
-			#print (monsterChoice)
 			
 			if (monsterChoice == 0):
 				temp = monster.Person()
