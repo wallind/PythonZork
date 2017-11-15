@@ -11,13 +11,15 @@ class Neighborhood(object):
 		
 		for i in range (self.w):
 			for k in range (self.h):
-				houseOrNah = randrange(0, 2)
-				if (houseOrNah == 1):
-					self.grid[k][i] = House()
+				self.grid[k][i] = House(i, k, randrange(0,2))
 
 class House(object):
 	"""Hpusefegfqeqwefqwef."""
-	def __init__(self):
+	def __init__(self, x, y, flag):
+		self.flag = flag		
+
+		self.x = x
+		self.y = y
 		self.monsters = []
 		numMonsters = randrange(0, 11)
 		
