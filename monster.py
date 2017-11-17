@@ -22,7 +22,7 @@ class Zombie(Monster):
 		"""Zombie Constructor."""
 		super(Zombie, self).__init__()
 		self.attackStrength = randrange(10)
-		self.healthPoints = randrange(50, 100)
+		self.healthPoints = randrange(50, 101)
 		
 
 class Vampire(Monster):
@@ -30,21 +30,21 @@ class Vampire(Monster):
 	def __init__(self):
 		"""Vampire Constructor"""
 		super(Vampire, self).__init__()
-		self.attackStrength = randrange(10, 20)
-		self.healthPoints = randrange(100, 200)
+		self.attackStrength = randrange(10, 21)
+		self.healthPoints = randrange(100, 201)
 
 class Ghoul(Monster):
 	"""Class to store ghoul information."""
 	def __init__(self):
 		"""Ghoul Constructor."""
 		super(Ghoul, self).__init__()
-		self.attackStength = randrange(15, 30)
-		self.healthPoints = randrange(40, 80)
+		self.attackStength = randrange(15, 31)
+		self.healthPoints = randrange(40, 81)
 
 class Werewolf(Monster):
 	"""Class to store werewolf information."""
 	def __init__(self):
 		"""Werewolf."""
 		super(Werewolf, self).__init__()
-		self.attackStrength = randrange(0, 40)
+		self.attackStrength = randrange(0, 41)
 		self.healthPoints = 200

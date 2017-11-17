@@ -7,11 +7,14 @@ class Neighborhood(object):
 		"""Neighborhood Constructor."""
 		self.w, self.h = randrange(3, 7), randrange(3, 7)
 		
-		self.grid = [[0 for x in range(self.w)] for y in range(self.h)]
-		
-		for i in range (self.w):
-			for k in range (self.h):
-				self.grid[k][i] = House(i, k, randrange(0,2))
+		self.grid = [[0 for x in range(self.h)] for y in range(self.w)]
+	
+
+		print ("Width: " + str(self.w))
+		print ("Height: " + str(self.h))	
+		for i in range (self.h):
+			for k in range (self.w):
+				self.grid[k][i] = House(k, i, randrange(0,2))
 
 class House(object):
 	"""Hpusefegfqeqwefqwef."""
