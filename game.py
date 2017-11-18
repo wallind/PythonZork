@@ -2,6 +2,9 @@ import hood
 import player
 import sys
 
+import pygame
+from pygame.locals import *
+
 from random import*
 
 class Game(object):
@@ -18,20 +21,12 @@ class Game(object):
 				count = count + 1
 				self.position = self.neighborHood.grid[randrange(self.neighborHood.h)][randrange(self.neighborHood.w)]
 				if (self.position.flag != 1):
-					print ("Flag of Starting Position: " + str(self.position.flag))
 					break
 				if (count == 400):
 					raise Exception("No Empty House")
 			except Exception:
-				print ("Re initializing Game (no empty houses)")
 				self.neighborHood = hood.Neighborhood()
 	
-		print ("\n\n\nStarting Position")
-		print ("\n\nX position: " + str(self.position.x))
-		print ("\nY position: " + str(self.position.y))	
-
-
-
 	def show(self):
 		output = []
 		for i in range (self.neighborHood.h):
@@ -97,3 +92,84 @@ class Game(object):
 
 		self.show()
 
+
+class GUI(object):
+	"""asfdjasdfas"""
+	def __init__(self, g):
+		self.game = g
+
+		pygame.init()
+
+		
+		self.gameBoardWidth, self.gameBoardHeight = self.game.neighborHood.w * 67, self.game.neighborHood.h * 24
+		self.mainBoardWidth, self.mainBoardHeight = self.gameBoardWidth + 300, self.gameBoardHeight + 200
+
+
+
+		self.screen = pygame.display.set_mode((self.mainBoardWidth, self.mainBoardHeight), 0, 32)
+
+
+		self.mainBoard = pygame.Surface(self.screen.get_size())
+		self.gameBoard = pygame.Surface((self.gameBoardWidth, self.gameBoardHeight))	
+		self.textBoard = pygame.Surface((300, self.mainBoardHeight))
+
+		self.clock = pygame.time.Clock()
+
+		self.updateBoards()
+
+	def run(self):
+		while (True):	
+			for event in pygame.event.get():
+				if event.type == QUIT:
+					pygame.quit()
+					sys.exit()
+
+				elif (event.type == KEYDOWN):
+					if (event.key == K_UP):
+						self.game.move("up")
+						self.updateBoards()
+					if (event.key == K_DOWN):
+						self.game.move("down")
+						self.updateBoards()
+
+					if (event.key == K_RIGHT):
+						self.game.move("right")
+						self.updateBoards()
+
+					if (event.key == K_LEFT):
+						self.game.move("left")
+						self.updateBoards()
+	
+	def updateTextBoard(self):
+		self.textBoard.fill((255, 170, 0))
+
+		rectangle = pygame.Rect(10, 10, 280, self.mainBoardHeight - 20)
+		pygame.draw.rect(self.textBoard, (0, 0 , 0), rectangle)
+
+	def updateGameBoard(self):
+		tempVar = self.game.show()
+		pos = 10
+
+		self.gameBoard.fill((255, 170, 0))
+		for str in tempVar:
+			myFont = pygame.font.SysFont("monospace", 15)
+			label = myFont.render(str, 1, (0, 0, 0))
+			self.gameBoard.blit(label, (10, 10 + pos))
+			pos = pos + 20
+	
+
+		rectangle =  pygame.Rect(9, 9, self.gameBoardWidth - 15, self.gameBoardHeight - 10)
+		pygame.draw.rect(self.gameBoard, (0, 0, 0), rectangle, 2)
+		
+
+	def updateBoards(self):
+		self.updateTextBoard()
+		self.updateGameBoard()
+
+		self.mainBoard.fill((255, 170, 0))
+
+		self.mainBoard.blit(self.textBoard, (self.gameBoardWidth, 0))
+		self.mainBoard.blit(self.gameBoard, (0, (int ((self.mainBoardHeight / 2) - (self.gameBoardHeight / 2)))))
+		self.screen.blit(self.mainBoard, (0, 0))
+
+		pygame.display.update()
