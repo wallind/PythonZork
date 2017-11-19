@@ -1,11 +1,11 @@
 from random import *
 
+#This is a class that creates the weapons in the player inventory at random and also randomizes the attack multiplier of each weapon.
+
 class Weapon(object):
 	"""A class to store Weapon information."""
-	"""mason was here"""
 	def __init__(self, typ, random):
 		"""WeaponConstructor"""
-		
 		if(random == 0):
 			self.weaponType = typ
 		else:

@@ -1,6 +1,10 @@
 import monster
 from random import *
 
+#This is a class that instantiates a neighborhood and also creates houses that have 0-10 monsters in each.
+#The monsters in the house are also randomly generated and picked. The neighborhood is also created at a 
+#random size.
+
 class Neighborhood(object):
 	"""Class to neighborhoodafdsjvcasdnfqwpngfqwf"""
 	def __init__(self):

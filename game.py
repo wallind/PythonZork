@@ -7,6 +7,8 @@ from pygame.locals import *
 
 from random import*
 
+#This is the game class that holds an instance of a player and a neighborhood and also creates our pygame GUI
+
 class Game(object):
 	"""sdgadhg"""
 	def __init__(self):

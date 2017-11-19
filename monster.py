@@ -1,5 +1,7 @@
 from random import *
 
+#This is the monster class that creates each monster individually, sets their health, and their attack strength at random.
+
 class Monster(object):
 	"""A class to store Monster Information."""
 	def __init__(self):

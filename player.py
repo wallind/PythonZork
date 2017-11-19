@@ -1,6 +1,8 @@
 import weapon
 from random import*
 
+#This class initializes a player and randomizes his heatlh, attack value and weapons in his inventory
+
 class Player(object):
 	"""sedgsetdhhsdfh"""
 	def __init__(self):
