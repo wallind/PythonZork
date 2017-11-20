@@ -1,8 +1,10 @@
 from random import *
 from observe import Observable
 
-#This is the monster class that creates each monster individually, sets their health, and their attack strength at random.
-
+########################################################################
+#This is the monster class that creates each monster individually, sets 
+#their health, and their attack strength at random.
+########################################################################
 class Monster(Observable):
 	"""A class to store Monster Information."""
 	def __init__(self):
@@ -11,7 +13,9 @@ class Monster(Observable):
 		self.attackStrength = 0
 		self.healthPoints = 0
 
-
+########################################################################
+#Child classes of Monster. They Set each monster to its specific type.
+########################################################################
 class Person(Monster):
 	"""A class to store Person Information."""
 	def __init__(self):
