@@ -1,6 +1,7 @@
 import hood
 import player
 import sys
+import monster
 
 import pygame
 from pygame.locals import *
@@ -93,6 +94,66 @@ class Game(object):
 				print ("Cant move right")
 
 		self.show()
+
+	#needs some work but got a start on it for the most part. also couldnt test it so theres
+	#most likely some errors in there, also need to get it to recognize which house it is in on the grid
+	def attack(self):
+		monsters = []
+		weapons = []
+
+		self.monsters = hood.House().monsters
+		self.weapons = player.weapons
+
+		for i in monsters:
+			for x in weapons:
+				if(monsters[i] == monster.Zombie() && self.weapons[x] == "SourStraws"):
+					#self.player1.hp = self.player1.hp - self.Zombie().attackStrength
+					self.Zombie().healthPoints = self.Zombie().healthPoints - self.player1.weapons[x]*2
+					print("attacked a Zombie")
+					print("Zombies heatlh = " + Zombie().healthPoints)
+					print("Your health = " + player1.healthPoints)
+				elif(monsters[i] == monster.Zombie()):
+					#self.player1.hp = self.player1.hp - self.Zombie().attackStrength
+					self.Zombie().healthPoints = self.Zombie().healthPoints - self.player1.weapons[x]
+					print("attacked a Zombie")
+					print("Zombies heatlh = " + Zombie().healthPoints)
+					print("Your health = " + player1.healthPoints)
+				elif(monsters[i] == monster.Vampire() && self.weapons[x] != "ChocolateBars"):
+					#self.player1.hp = self.player1.hp - self.Vampire().attackStrength
+					self.Vampire().healthPoints = self.Vampire().healthPoints - self.player1.weapons[x]
+					print("attacked a Vampire")
+					print("Vampire heatlh = " + Vampire().healthPoints)
+					print("Your health = " + player1.healthPoints)
+				elif(monsters[i] == monster.Ghoul() && self.weapons[x] == "NerdBombs"):
+					#self.player1.hp = self.player1.hp - self.Ghoul().attackStrength
+					self.Ghoul().healthPoints = self.Ghoul().healthPoints - self.player1.weapons[x]*5
+					print("attacked a Ghoul")
+					print("Ghouls heatlh = " + Ghoul().healthPoints)
+					print("Your health = " + player1.healthPoints)	
+				elif(monsters[i] == monster.Ghoul()):
+					#self.player1.hp = self.player1.hp - self.Ghoul().attackStrength
+					self.Ghoul().healthPoints = self.Ghoul().healthPoints - self.player1.weapons[x]
+					print("attacked a Ghoul")
+					print("Ghouls heatlh = " + Ghoul().healthPoints)
+					print("Your health = " + player1.healthPoints)	
+				elif(monsters[i] == monster.Werewolf() && self.weapons[x] != "ChocolateBars" && self.weapons[x] != "SourStraws"):
+					#self.player1.hp = self.player1.hp - self.Werewolf().attackStrength
+					self.Werewolf().healthPoints = self.Werewolf().healthPoints - self.player1.weapons[x]
+					print("attacked a Werewolf")
+					print("Werewolf heatlh = " + Werewolf().healthPoints)
+					print("Your health = " + player1.healthPoints)	
+				elif(monsters[i] == monster.Person()):	
+					self.player1.hp = self.player1.hp - self.Person().attackStrength	
+
+	#if the monster dies then it must be turned into a person
+	def deadMonster(self):
+
+
+	#method that checks to see if the player is alive
+	def isPlayerAlive(self):
+		if(player1.healthPoints <= 0):
+			("You are now dead, it was a good run")
+			system.exit()	
 
 
 class GUI(object):
