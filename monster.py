@@ -1,11 +1,13 @@
 from random import *
+from observe import Observable
 
 #This is the monster class that creates each monster individually, sets their health, and their attack strength at random.
 
-class Monster(object):
+class Monster(Observable):
 	"""A class to store Monster Information."""
 	def __init__(self):
 		"""Monster Constructor."""
+		Observable.__init__(self)
 		self.attackStrength = 0
 		self.healthPoints = 0
 

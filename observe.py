@@ -19,14 +19,14 @@ class Observable(object):
         if self.observers:
             del self.observers[:]
  
-    def update_observers(self, *args, **kwargs):
+    def update_observers(self, something):
         for observer in self.observers:
-            observer.update(*args, **kwargs)
+            observer.update(something)
 
 
 class Observer(object):
     __metaclass__ = ABCMeta
  
     @abstractmethod
-    def update(self, *args, **kwargs):
+    def update(self, something):
         pass

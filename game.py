@@ -106,7 +106,7 @@ class Game(object):
 
 		for i in monsters:
 			for x in weapons:
-				if(monsters[i] == monster.Zombie() && self.weapons[x] == "SourStraws"):
+				if(monsters[i] == monster.Zombie() and self.weapons[x] == "SourStraws"):
 					#self.player1.hp = self.player1.hp - self.Zombie().attackStrength
 					self.Zombie().healthPoints = self.Zombie().healthPoints - self.player1.weapons[x]*2
 					print("attacked a Zombie")
@@ -118,13 +118,13 @@ class Game(object):
 					print("attacked a Zombie")
 					print("Zombies heatlh = " + Zombie().healthPoints)
 					print("Your health = " + player1.healthPoints)
-				elif(monsters[i] == monster.Vampire() && self.weapons[x] != "ChocolateBars"):
+				elif(monsters[i] == monster.Vampire() and self.weapons[x] != "ChocolateBars"):
 					#self.player1.hp = self.player1.hp - self.Vampire().attackStrength
 					self.Vampire().healthPoints = self.Vampire().healthPoints - self.player1.weapons[x]
 					print("attacked a Vampire")
 					print("Vampire heatlh = " + Vampire().healthPoints)
 					print("Your health = " + player1.healthPoints)
-				elif(monsters[i] == monster.Ghoul() && self.weapons[x] == "NerdBombs"):
+				elif(monsters[i] == monster.Ghoul() and self.weapons[x] == "NerdBombs"):
 					#self.player1.hp = self.player1.hp - self.Ghoul().attackStrength
 					self.Ghoul().healthPoints = self.Ghoul().healthPoints - self.player1.weapons[x]*5
 					print("attacked a Ghoul")
@@ -136,7 +136,7 @@ class Game(object):
 					print("attacked a Ghoul")
 					print("Ghouls heatlh = " + Ghoul().healthPoints)
 					print("Your health = " + player1.healthPoints)	
-				elif(monsters[i] == monster.Werewolf() && self.weapons[x] != "ChocolateBars" && self.weapons[x] != "SourStraws"):
+				elif(monsters[i] == monster.Werewolf() and self.weapons[x] != "ChocolateBars" and self.weapons[x] != "SourStraws"):
 					#self.player1.hp = self.player1.hp - self.Werewolf().attackStrength
 					self.Werewolf().healthPoints = self.Werewolf().healthPoints - self.player1.weapons[x]
 					print("attacked a Werewolf")
@@ -146,13 +146,13 @@ class Game(object):
 					self.player1.hp = self.player1.hp - self.Person().attackStrength	
 
 	#if the monster dies then it must be turned into a person
-	def deadMonster(self):
+	#def deadMonster(self):
 
 
 	#method that checks to see if the player is alive
 	def isPlayerAlive(self):
 		if(player1.healthPoints <= 0):
-			("You are now dead, it was a good run")
+			print ("You are now dead, it was a good run")
 			system.exit()	
 
 
@@ -203,21 +203,28 @@ class GUI(object):
 						self.game.move("left")
 						self.updateBoards()
 	
-	def updateTextBoard(self):
+
+
+	def updateTextBoard(self, state):
 		self.textBoard.fill((255, 170, 0))
 
 		rectangle = pygame.Rect(10, 10, 280, self.mainBoardHeight - 20)
 		pygame.draw.rect(self.textBoard, (0, 0 , 0), rectangle)
 
+		#if (state == "init"):
+
+
+
+
 	def updateGameBoard(self):
 		tempVar = self.game.show()
-		pos = 10
+		pos = 15
 
 		self.gameBoard.fill((255, 170, 0))
 		for str in tempVar:
 			myFont = pygame.font.SysFont("monospace", 15)
 			label = myFont.render(str, 1, (0, 0, 0))
-			self.gameBoard.blit(label, (10, 10 + pos))
+			self.gameBoard.blit(label, (10, pos))
 			pos = pos + 20
 	
 

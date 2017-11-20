@@ -1,5 +1,6 @@
 import monster
 from random import *
+from observe import Observer
 
 #This is a class that instantiates a neighborhood and also creates houses that have 0-10 monsters in each.
 #The monsters in the house are also randomly generated and picked. The neighborhood is also created at a 
@@ -17,7 +18,7 @@ class Neighborhood(object):
 			for k in range (self.w):
 				self.grid[k][i] = House(k, i, randrange(0,2))
 
-class House(object):
+class House(Observer):
 	"""Hpusefegfqeqwefqwef."""
 	def __init__(self, x, y, flag):
 		self.flag = flag		
@@ -32,20 +33,27 @@ class House(object):
 			
 			if (monsterChoice == 0):
 				temp = monster.Person()
-				self.monsters.append(temp)
 
 			elif (monsterChoice == 1):
 				temp = monster.Zombie()
-				self.monsters.append(temp)
 
 			elif (monsterChoice == 2):
 				temp = monster.Vampire()
-				self.monsters.append(temp)
 
 			elif (monsterChoice == 3):
 				temp = monster.Ghoul()
-				self.monsters.append(temp)
 
 			elif (monsterChoice == 4):
 				temp = monster.Werewolf()
-				self.monsters.append(temp)
+			
+			temp.register(self)
+			self.monsters.append(temp)
+
+	def update(self, something):
+		print ("YAY")
+
+
+
+
+
+
