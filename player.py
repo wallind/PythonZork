@@ -15,4 +15,6 @@ class Player(object):
 			
 			temp = weapon.Weapon("error", 1)
 			self.weapons.append(temp)
-			
+	def useWeapon(self, index):
+		if (self.weapons[index].uses >= 0):
+			self.weapons[index].useWeapon()

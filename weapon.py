@@ -12,13 +12,10 @@ class Weapon(object):
 			typeList = ['HersheyKisses', 'SourStraws', 'ChocolateBars', 'NerdBombs']
 			self.weaponType = typeList[randrange(0,4)]	
 
-		weaponModifiers = {'HersheyKisses': [1, 1, 100,000], 'SourStraws': [1, 1.75, 2], 'ChocolateBars': [2, 2.4, 4], 'NerdBombs': [3.5, 5, 1]}
+		weaponModifiers = {'HersheyKisses': [1, 1, 10], 'SourStraws': [1, 1.75, 2], 'ChocolateBars': [2, 2.4, 4], 'NerdBombs': [3.5, 5, 1]}
 		
-		if (self.weaponType != 'HersheyKisses'):
-			self.Modifier = uniform(weaponModifiers[self.weaponType][0], weaponModifiers[self.weaponType][1])
-		else:
-			self.Modifier = 1
-			self.uses = weaponModifiers[self.weaponType][2]
+		self.modifier = uniform(weaponModifiers[self.weaponType][0], weaponModifiers[self.weaponType][1])
+		self.uses = weaponModifiers[self.weaponType][2]
 		
-	def useWeapon():
-		uses = uses - 1
+	def useWeapon(self):
+		self.uses = self.uses - 1

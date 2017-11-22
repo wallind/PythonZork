@@ -49,8 +49,10 @@ class House(Observer):
 			temp.register(self)
 			self.monsters.append(temp)
 
-	def update(self, something):
-		print ("YAY")
+	def update(self, alive, index):
+		if (not alive):
+			self.monsters[index] = monster.Person();
+		
 
 
 

@@ -8,8 +8,33 @@ class Monster(Observable):
 	def __init__(self):
 		"""Monster Constructor."""
 		Observable.__init__(self)
-		self.attackStrength = 0
+		self.attackRange = []
 		self.healthPoints = 0
+	
+	def getAttacked(self, weapon, attackVal):
+		if (weapon.weaponType == 'SourStraws'):
+			if (type(self) is Zombie):
+				self.healthPoints = self.healthPoints - (2 * weapon.modifier * attackVal)
+			elif (type(self) is Werewolf):
+				return	
+			else:
+				self.healthPoints = self.healthPoints - (weapon.modifier * attackVal)
+		
+		if (weapon.weaponType == 'HersheyKisses'):
+			self.healthPoints = self.healthPoints - (weapon.modifier * attackVal)
+
+		if (weapon.weaponType == 'ChocolateBars'):
+			if (type(self) is Zombie or type(self) is Werewolf):
+				return
+			else:
+				self.healthPoints = self.healthPoints - (weapon.modifier * attackVal)
+
+		if (weapon.weaponType == 'NerdBombs'):
+			if (type(self) is Ghoul):
+				self.healthPoints = self.healthPoints - (5 * weapon.modifier * attackVal)
+			else:
+				self.healthPoints = self.healthPoints - (weapon.modifier * attackVal)
+
 
 
 class Person(Monster):
@@ -17,7 +42,7 @@ class Person(Monster):
 	def __init__(self):
 		"""Person Constructor."""
 		super(Person, self).__init__()
-		self.attackStrength = -1
+		self.attackRange = [-1, -1]
 		self.healthPoints = 100
 
 class Zombie(Monster):
@@ -25,7 +50,7 @@ class Zombie(Monster):
 	def __init__(self):
 		"""Zombie Constructor."""
 		super(Zombie, self).__init__()
-		self.attackStrength = randrange(10)
+		self.attackRange = [0, 11]
 		self.healthPoints = randrange(50, 101)
 		
 
@@ -34,7 +59,7 @@ class Vampire(Monster):
 	def __init__(self):
 		"""Vampire Constructor"""
 		super(Vampire, self).__init__()
-		self.attackStrength = randrange(10, 21)
+		self.attackRange = [10, 21]
 		self.healthPoints = randrange(100, 201)
 
 class Ghoul(Monster):
@@ -42,7 +67,7 @@ class Ghoul(Monster):
 	def __init__(self):
 		"""Ghoul Constructor."""
 		super(Ghoul, self).__init__()
-		self.attackStength = randrange(15, 31)
+		self.attackRange = [15, 31]
 		self.healthPoints = randrange(40, 81)
 
 class Werewolf(Monster):
@@ -50,5 +75,5 @@ class Werewolf(Monster):
 	def __init__(self):
 		"""Werewolf."""
 		super(Werewolf, self).__init__()
-		self.attackStrength = randrange(0, 41)
+		self.attackRange = [0, 41]
 		self.healthPoints = 200

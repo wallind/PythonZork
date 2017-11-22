@@ -56,9 +56,9 @@ class Game(object):
 					self.position = self.neighborHood.grid[self.position.x][self.position.y + 1]
 				else:
 					self.position = self.neighborHood.grid[self.position.x][self.position.y + 1]
-					print ("No house here")
+					return ("No house here")
 			except IndexError:
-				print ("Cant move up")
+				return ("Cant move up")
 		if (direction == "down"):
 			try:
 				if ((self.position.y - 1) < 0):
@@ -68,9 +68,9 @@ class Game(object):
 					self.position = self.neighborHood.grid[self.position.x][self.position.y -1]
 				else:
 					self.position = self.neighborHood.grid[self.position.x][self.position.y - 1]
-					print ("No house here")
+					return ("No house here")
 			except IndexError:
-				print ("Cant move down")
+				return ("Cant move down")
 		if (direction == "left"):
 			try:
 				if ((self.position.x - 1) < 0):
@@ -80,74 +80,40 @@ class Game(object):
 					self.position = self.neighborHood.grid[self.position.x - 1][self.position.y]
 				else:
 					self.position = self.neighborHood.grid[self.position.x - 1][self.position.y]
-					print ("No house here")
+					return ("No house here")
 			except IndexError:
-				print ("Cant move left")
+				return ("Cant move left")
 		if (direction == "right"):	
 			try:
 				if (self.neighborHood.grid[self.position.x + 1][self.position.y].flag == 1):
 					self.position = self.neighborHood.grid[self.position.x + 1][self.position.y]
 				else:
 					self.position = self.neighborHood.grid[self.position.x + 1][self.position.y]
-					print ("No house here")
+					return ("No house here")
 			except IndexError:
-				print ("Cant move right")
+				return ("Cant move right")
 
-		self.show()
+		return ""
 
 	#needs some work but got a start on it for the most part. also couldnt test it so theres
 	#most likely some errors in there, also need to get it to recognize which house it is in on the grid
-	def attack(self):
-		monsters = []
-		weapons = []
+	def attack(self, weapon):
+		weaponNow = self.player1.weapons[weapon]
+	
+		count = 0
 
-		self.monsters = hood.House().monsters
-		self.weapons = player.weapons
+		for monster in self.position.monsters:
+			monster.getAttacked(weaponNow,self.player1.attackValue)			
+			
+			if (monster.healthPoints <= 0):
+				monster.update_observers(False, count)
 
-		for i in monsters:
-			for x in weapons:
-				if(monsters[i] == monster.Zombie() and self.weapons[x] == "SourStraws"):
-					#self.player1.hp = self.player1.hp - self.Zombie().attackStrength
-					self.Zombie().healthPoints = self.Zombie().healthPoints - self.player1.weapons[x]*2
-					print("attacked a Zombie")
-					print("Zombies heatlh = " + Zombie().healthPoints)
-					print("Your health = " + player1.healthPoints)
-				elif(monsters[i] == monster.Zombie()):
-					#self.player1.hp = self.player1.hp - self.Zombie().attackStrength
-					self.Zombie().healthPoints = self.Zombie().healthPoints - self.player1.weapons[x]
-					print("attacked a Zombie")
-					print("Zombies heatlh = " + Zombie().healthPoints)
-					print("Your health = " + player1.healthPoints)
-				elif(monsters[i] == monster.Vampire() and self.weapons[x] != "ChocolateBars"):
-					#self.player1.hp = self.player1.hp - self.Vampire().attackStrength
-					self.Vampire().healthPoints = self.Vampire().healthPoints - self.player1.weapons[x]
-					print("attacked a Vampire")
-					print("Vampire heatlh = " + Vampire().healthPoints)
-					print("Your health = " + player1.healthPoints)
-				elif(monsters[i] == monster.Ghoul() and self.weapons[x] == "NerdBombs"):
-					#self.player1.hp = self.player1.hp - self.Ghoul().attackStrength
-					self.Ghoul().healthPoints = self.Ghoul().healthPoints - self.player1.weapons[x]*5
-					print("attacked a Ghoul")
-					print("Ghouls heatlh = " + Ghoul().healthPoints)
-					print("Your health = " + player1.healthPoints)	
-				elif(monsters[i] == monster.Ghoul()):
-					#self.player1.hp = self.player1.hp - self.Ghoul().attackStrength
-					self.Ghoul().healthPoints = self.Ghoul().healthPoints - self.player1.weapons[x]
-					print("attacked a Ghoul")
-					print("Ghouls heatlh = " + Ghoul().healthPoints)
-					print("Your health = " + player1.healthPoints)	
-				elif(monsters[i] == monster.Werewolf() and self.weapons[x] != "ChocolateBars" and self.weapons[x] != "SourStraws"):
-					#self.player1.hp = self.player1.hp - self.Werewolf().attackStrength
-					self.Werewolf().healthPoints = self.Werewolf().healthPoints - self.player1.weapons[x]
-					print("attacked a Werewolf")
-					print("Werewolf heatlh = " + Werewolf().healthPoints)
-					print("Your health = " + player1.healthPoints)	
-				elif(monsters[i] == monster.Person()):	
-					self.player1.hp = self.player1.hp - self.Person().attackStrength	
+			count = count + 1
 
-	#if the monster dies then it must be turned into a person
-	#def deadMonster(self):
-
+		self.player1.useWeapon(weapon)
+		
+		if (weaponNow.uses <= 0):
+			del self.player1.weapons[weapon]
 
 	#method that checks to see if the player is alive
 	def isPlayerAlive(self):
@@ -160,12 +126,13 @@ class GUI(object):
 	"""asfdjasdfas"""
 	def __init__(self, g):
 		self.game = g
+		self.message = ""
 
 		pygame.init()
-
-		
-		self.gameBoardWidth, self.gameBoardHeight = self.game.neighborHood.w * 67, self.game.neighborHood.h * 24
-		self.mainBoardWidth, self.mainBoardHeight = self.gameBoardWidth + 300, self.gameBoardHeight + 200
+		self.myFont = pygame.font.SysFont("inconsolata", 14)
+	
+		self.gameBoardWidth, self.gameBoardHeight = self.game.neighborHood.w * 60, self.game.neighborHood.h * 24
+		self.mainBoardWidth, self.mainBoardHeight = self.gameBoardWidth + 500, self.gameBoardHeight + 200
 
 
 
@@ -174,45 +141,178 @@ class GUI(object):
 
 		self.mainBoard = pygame.Surface(self.screen.get_size())
 		self.gameBoard = pygame.Surface((self.gameBoardWidth, self.gameBoardHeight))	
-		self.textBoard = pygame.Surface((300, self.mainBoardHeight))
+		self.textBoard = pygame.Surface((500, self.mainBoardHeight))
 
 		self.clock = pygame.time.Clock()
 
-		self.updateBoards()
+		self.updateBoards("init")
 
 	def run(self):
+		playing = False
 		while (True):	
 			for event in pygame.event.get():
-				if event.type == QUIT:
+				if (event.type == QUIT):
 					pygame.quit()
 					sys.exit()
-
+				
 				elif (event.type == KEYDOWN):
-					if (event.key == K_UP):
-						self.game.move("up")
-						self.updateBoards()
-					if (event.key == K_DOWN):
-						self.game.move("down")
-						self.updateBoards()
+					if (event.key == K_RETURN):
+						if (not playing):
+							playing = True
+							self.updateBoards("moving")
 
-					if (event.key == K_RIGHT):
-						self.game.move("right")
-						self.updateBoards()
+						elif (self.game.position.flag == 1):
+							self.enterHouse()
+						
+					elif (playing):
+						if (event.key == K_UP):
+							self.message = self.game.move("up")
+							self.updateBoards("moving")
+			
+						if (event.key == K_DOWN):
+							self.message = self.game.move("down")
+							self.updateBoards("moving")
+			
+						if (event.key == K_RIGHT):
+							self.message = self.game.move("right")
+							self.updateBoards("moving")
 
-					if (event.key == K_LEFT):
-						self.game.move("left")
-						self.updateBoards()
-	
+						if (event.key == K_LEFT):
+							self.message = self.game.move("left")
+							self.updateBoards("moving")
+
+
+
+
+	def enterHouse(self):
+		self.updateBoards("combat")
+		done = False	
+		while (not done):
+			for event in pygame.event.get():
+				if (event.type == KEYDOWN):
+					done = True
+					if (event.key == K_0):
+						self.game.attack(0)
+					if (event.key == K_1):
+						self.game.attack(1)
+					if (event.key == K_2):
+						self.game.attack(2)
+					if (event.key == K_3):
+						self.game.attack(3)
+					self.updateBoards("combat")
+					
+					for monst in self.game.position.monsters:
+						if (type(monst) is not monster.Person):
+							done = False
+			
 
 
 	def updateTextBoard(self, state):
 		self.textBoard.fill((255, 170, 0))
-
-		rectangle = pygame.Rect(10, 10, 280, self.mainBoardHeight - 20)
+		rectangle = pygame.Rect(10, 10, 480, self.mainBoardHeight - 20)
 		pygame.draw.rect(self.textBoard, (0, 0 , 0), rectangle)
 
-		#if (state == "init"):
+		if (state == "init"):	
+			temp = "Welcome to the NeighborHood"
+			label = self.myFont.render(temp, 1, (255, 255, 255))
+			self.textBoard.blit(label, (20, 15))
+			temp = "Move around the neighborhood using the arrow keys and"
+			label = self.myFont.render(temp, 1, (255, 255, 255))
+			self.textBoard.blit(label, (15, 50))
+			temp = "kill all the monsters. Once a house has been cleared"
+			label = self.myFont.render(temp, 1, (255, 255, 255))
+			self.textBoard.blit(label, (15, 70))
+			temp = "The icon will change from [    ] to [[   ]]"
+			label = self.myFont.render(temp, 1, (255, 255, 255))
+			self.textBoard.blit(label, (15, 90))
+			temp = "Press Enter to start"
+			label = self.myFont.render(temp, 1, (255, 255, 255))
+			self.textBoard.blit(label, (15, 200))
+		
+		elif (state == "moving"):
+			temp = "Use the arrow keys to move"
+			label = self.myFont.render(temp, 1, (255, 255, 255))
+			self.textBoard.blit(label, (15, 20))
+			temp = "          ^"
+			label = self.myFont.render(temp, 1, (255, 255, 255))
+			self.textBoard.blit(label, (15, 50))
+			temp = "          |"
+			label = self.myFont.render(temp, 1, (255, 255, 255))
+			self.textBoard.blit(label, (15, 70))
+			temp = "       <--|-->"
+			label = self.myFont.render(temp, 1, (255, 255, 255))
+			self.textBoard.blit(label, (15, 90))
+			temp = "          |"
+			label = self.myFont.render(temp, 1, (255, 255, 255))
+			self.textBoard.blit(label, (15, 110))
+			temp = "          v"
+			label = self.myFont.render(temp, 1, (255, 255, 255))
+			self.textBoard.blit(label, (15, 130))
+			temp = "Press Enter to go into a"
+			label = self.myFont.render(temp, 1, (255, 255, 255))
+			self.textBoard.blit(label, (15, 200))
+			temp = "house and engage the monsters"
+			label = self.myFont.render(temp, 1, (255, 255, 255))
+			self.textBoard.blit(label, (15, 220))
+			temp = "Console: " + self.message
+			label = self.myFont.render(temp, 1, (255, 255, 255))
+			self.textBoard.blit(label, (15, 255))
 
+		elif (state == "combat"):
+			temp = "Press the corresponding number"
+			label = self.myFont.render(temp, 1, (255, 255, 255))
+			self.textBoard.blit(label, (15, 20))
+			temp = "key to attack with a weapon"
+			label = self.myFont.render(temp, 1, (255, 255, 255))
+			self.textBoard.blit(label, (15, 40))
+			temp = "Monsters  | HP   || (NUMKEY) |  Weapon Type  | Uses Left "
+			label = self.myFont.render(temp, 1, (255, 255, 255))
+			self.textBoard.blit(label, (15, 80))
+			temp = "_________________________________________________________"
+			label = self.myFont.render(temp, 1, (255, 255, 255))
+			self.textBoard.blit(label, (15, 90))
+			
+			pos = 110
+			
+			for index in range(10):	
+				if (index < len(self.game.position.monsters)):
+					temp = str(type(self.game.position.monsters[index]))
+					temp = temp[16:-2]
+			
+					label = self.myFont.render(temp, 1, (255, 255, 255))
+					self.textBoard.blit(label, (15, pos))
+
+					if (type(self.game.position.monsters[index]) is not monster.Person):	
+						temp ="| " + str(int(self.game.position.monsters[index].healthPoints))
+					
+					else:
+						temp = "|"
+						
+					label = self.myFont.render(temp, 1, (255, 255, 255))
+					self.textBoard.blit(label, (94, pos))
+
+
+				if (index < len(self.game.player1.weapons)):
+					temp = "||   (" +str(index) + ")    | "
+					temp = temp + self.game.player1.weapons[index].weaponType
+					label = self.myFont.render(temp, 1, (255, 255, 255))
+					self.textBoard.blit(label, (151, pos))
+
+					temp = "| " + str(self.game.player1.weapons[index].uses)
+					label = self.myFont.render(temp, 1, (255, 255, 255))
+					self.textBoard.blit(label, (375, pos))
+				pos = pos + 15
+			temp = "Player HP: " + str(self.game.player1.hp) + "   ["
+			
+			for bar in range(30):
+				if (bar * 5 < self.game.player1.hp):
+					temp = temp + "|"
+			
+				else:
+					temp = temp + " "
+			temp = temp + "]"
+			label = self.myFont.render(temp, 1, (255, 255, 255))
+			self.textBoard.blit(label, (15, 268))
 
 
 
@@ -222,8 +322,7 @@ class GUI(object):
 
 		self.gameBoard.fill((255, 170, 0))
 		for str in tempVar:
-			myFont = pygame.font.SysFont("monospace", 15)
-			label = myFont.render(str, 1, (0, 0, 0))
+			label = self.myFont.render(str, 1, (0, 0, 0))
 			self.gameBoard.blit(label, (10, pos))
 			pos = pos + 20
 	
@@ -232,9 +331,11 @@ class GUI(object):
 		pygame.draw.rect(self.gameBoard, (0, 0, 0), rectangle, 2)
 		
 
-	def updateBoards(self):
-		self.updateTextBoard()
-		self.updateGameBoard()
+	def updateBoards(self, textState):
+		self.updateTextBoard(textState)
+		
+		if (textState == "moving" or "init"):
+			self.updateGameBoard()
 
 		self.mainBoard.fill((255, 170, 0))
 
