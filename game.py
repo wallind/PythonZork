@@ -8,8 +8,10 @@ from pygame.locals import *
 
 from random import*
 
-#This is the game class that holds an instance of a player and a neighborhood and also creates our pygame GUI
-
+####################################################################
+#This is the game class that holds an instance of a player and a 
+#neighborhood and also creates our pygame GUI.
+####################################################################
 class Game(object):
 	"""sdgadhg"""
 	def __init__(self):
@@ -29,7 +31,11 @@ class Game(object):
 					raise Exception("No Empty House")
 			except Exception:
 				self.neighborHood = hood.Neighborhood()
-	
+	####################################################################
+	#This method is used to display the neighborhood with houses in the
+	#GUI. Boxes are houses and empty squares are not. X indicates
+	#the players location.
+	####################################################################
 	def show(self):
 		output = []
 		for i in range (self.neighborHood.h):
@@ -48,7 +54,11 @@ class Game(object):
 			output.append(temp)
 		return output
 
-
+	####################################################################
+	#This method allows you to move around the neighborhood in the GUI.
+	#This method also allows you to use the arrow keys to do such
+	#actions.
+	####################################################################
 	def move(self, direction):
 		if (direction == "up"):
 			try:
@@ -95,6 +105,13 @@ class Game(object):
 
 		return ""
 
+
+	#######################################################################
+	#This is the method that goes through a list of homes and the monsters
+	#in each home and then attacks each momnster within that house.
+	#######################################################################
+
+
 	#needs some work but got a start on it for the most part. also couldnt test it so theres
 	#most likely some errors in there, also need to get it to recognize which house it is in on the grid
 	def attack(self, weapon):
@@ -115,15 +132,20 @@ class Game(object):
 		if (weaponNow.uses <= 0):
 			del self.player1.weapons[weapon]
 
-	#method that checks to see if the player is alive
+	####################################################################
+	#This methodf checks to see if you are still alive and well. If you
+	#are not then game over, thanks for playing.
+	####################################################################
 	def isPlayerAlive(self):
 		if(player1.healthPoints <= 0):
 			print ("You are now dead, it was a good run")
 			system.exit()	
 
-
+####################################################################
+#This class is what creates the pygame GUI
+####################################################################
 class GUI(object):
-	"""asfdjasdfas"""
+	"""Constructor for GUI"""
 	def __init__(self, g):
 		self.game = g
 		self.message = ""
@@ -147,6 +169,9 @@ class GUI(object):
 
 		self.updateBoards("init")
 
+	####################################################################
+	#This method allows you to used the arrow keys to move around.
+	####################################################################
 	def run(self):
 		playing = False
 		while (True):	
@@ -206,7 +231,9 @@ class GUI(object):
 							done = False
 			
 
-
+	####################################################################
+	#This method updates the text being output corrctly
+	####################################################################					
 	def updateTextBoard(self, state):
 		self.textBoard.fill((255, 170, 0))
 		rectangle = pygame.Rect(10, 10, 480, self.mainBoardHeight - 20)
@@ -315,7 +342,9 @@ class GUI(object):
 			self.textBoard.blit(label, (15, 268))
 
 
-
+	####################################################################
+	#This method updates the game board and sizes it correctly.
+	####################################################################
 	def updateGameBoard(self):
 		tempVar = self.game.show()
 		pos = 15
@@ -330,12 +359,14 @@ class GUI(object):
 		rectangle =  pygame.Rect(9, 9, self.gameBoardWidth - 15, self.gameBoardHeight - 10)
 		pygame.draw.rect(self.gameBoard, (0, 0, 0), rectangle, 2)
 		
-
+	####################################################################
+	#This method updates the board to the proper coloring we want.
+	####################################################################
 	def updateBoards(self, textState):
 		self.updateTextBoard(textState)
 		
 		if (textState == "moving" or "init"):
-			self.updateGameBoard()
+			self.updateGameBoard()	
 
 		self.mainBoard.fill((255, 170, 0))
 
