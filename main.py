@@ -6,8 +6,11 @@ from hood import House
 import monster
 
 
-#This is the main method that creates an insatnce of the game and how the game is played through.
 
+########################################################################
+#This is the main method that creates an insatnce of the game and how 
+#the game is played through.
+########################################################################
 if __name__ == "__main__":
 	testGame = Game()
 	testGUI = GUI(testGame)

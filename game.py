@@ -17,7 +17,7 @@ class Game(object):
 		self.neighborHood = hood.Neighborhood()
 		self.player1 = player.Player()
 
-	#######################################################################
+	########################################################################
 	#This is the method that goes through a list of homes and the monsters
 	#in each home and then attacks each momnster within that house.
 	#######################################################################
@@ -137,7 +137,10 @@ class GUI(object):
 
 
 
-
+	####################################################################
+	#This method is used to enter the house and start attacking the 
+	#monsters within it.
+	####################################################################
 	def enterHouse(self):
 		self.updateBoards("combat")
 		done = False	

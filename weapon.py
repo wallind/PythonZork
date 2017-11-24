@@ -13,9 +13,14 @@ class Weapon(object):
 
 		self.weaponModifiers = {'HersheyKisses': [1, 1, 10], 'SourStraws': [1, 1.75, 2], 'ChocolateBars': [2, 2.4, 4], 'NerdBombs': [3.5, 5, 1]}
 		
+
 		self.modifier = uniform(self.weaponModifiers[self.weaponType][0], self.weaponModifiers[self.weaponType][1])
 		self.uses = self.weaponModifiers[self.weaponType][2]
 		
+	########################################################################
+	#This method reduced the times a weapon can be used following its use
+	#on a monster.
+	########################################################################
 	def useWeapon(self):
 		self.uses = self.uses - 1
 

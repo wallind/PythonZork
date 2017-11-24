@@ -19,11 +19,16 @@ class Player(object):
 		for i in range(0, 4):
 			self.weapons.append(Weapon(i))
 		
+
 		for i in range(0, 6):
 			weaponId = randrange(0, 4)	
 			tempWeapon = Weapon(weaponId)
 			self.weapons[weaponId].addUses(weaponId)
 
+	########################################################################
+	#This method is used to keep track of how many uses a weapon has and if
+	#it is 0 or greater it then calls the useWeapon again.
+	########################################################################
 	def useWeapon(self, index):
 		if (self.weapons[index].uses >= 0):
 			self.weapons[index].useWeapon()

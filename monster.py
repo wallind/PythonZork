@@ -12,7 +12,12 @@ class Monster(Observable):
 		Observable.__init__(self)
 		self.attackRange = []
 		self.healthPoints = 0
-	
+	########################################################################
+	#This is the get attacked method which checks to see if the monster is 
+	#of a certain type and can be attacked by a specific weapon. If it can
+	#then its health is deducted by the attack value multiplied by the 
+	#weapons attack modifier.
+	########################################################################
 	def getAttacked(self, weapon, attackVal):
 		if (weapon.weaponType == 'SourStraws'):
 			if (type(self) is Zombie):
