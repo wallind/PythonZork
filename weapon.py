@@ -6,18 +6,18 @@ from random import *
 ####################################################################
 class Weapon(object):
 	"""A class to store Weapon information."""
-	def __init__(self, typ, random):
+	def __init__(self, typ):
 		"""Weapon Constructor"""
-		if(random == 0):
-			self.weaponType = typ
-		else:
-			typeList = ['HersheyKisses', 'SourStraws', 'ChocolateBars', 'NerdBombs']
-			self.weaponType = typeList[randrange(0,4)]	
+		typeList = ['HersheyKisses', 'SourStraws', 'ChocolateBars', 'NerdBombs']
+		self.weaponType = typeList[typ]	
 
-		weaponModifiers = {'HersheyKisses': [1, 1, 10], 'SourStraws': [1, 1.75, 2], 'ChocolateBars': [2, 2.4, 4], 'NerdBombs': [3.5, 5, 1]}
+		self.weaponModifiers = {'HersheyKisses': [1, 1, 10], 'SourStraws': [1, 1.75, 2], 'ChocolateBars': [2, 2.4, 4], 'NerdBombs': [3.5, 5, 1]}
 		
-		self.modifier = uniform(weaponModifiers[self.weaponType][0], weaponModifiers[self.weaponType][1])
-		self.uses = weaponModifiers[self.weaponType][2]
+		self.modifier = uniform(self.weaponModifiers[self.weaponType][0], self.weaponModifiers[self.weaponType][1])
+		self.uses = self.weaponModifiers[self.weaponType][2]
 		
 	def useWeapon(self):
 		self.uses = self.uses - 1
+
+	def addUses(self, weaponId):
+		self.uses = self.uses + self.weaponModifiers[self.weaponType][2]

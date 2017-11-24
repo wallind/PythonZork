@@ -46,7 +46,7 @@ class Person(Monster):
 	def __init__(self):
 		"""Person Constructor."""
 		super(Person, self).__init__()
-		self.attackRange = [-1, -1]
+		self.attackRange = [-2, -2]
 		self.healthPoints = 100
 
 class Zombie(Monster):

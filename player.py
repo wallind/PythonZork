@@ -3,7 +3,7 @@
 # @author Douglas Wallind
 ########################################################################
 
-import weapon
+from weapon import Weapon
 from random import*
 
 ########################################################################
@@ -15,10 +15,14 @@ class Player(object):
 		self.hp = randrange(100, 126)
 		self.attackValue = randrange(10, 21)
 		self.weapons = []
+
+		for i in range(0, 4):
+			self.weapons.append(Weapon(i))
 		
-		for i in range(10):
-			temp = weapon.Weapon("error", 1)
-			self.weapons.append(temp)
+		for i in range(0, 6):
+			weaponId = randrange(0, 4)	
+			tempWeapon = Weapon(weaponId)
+			self.weapons[weaponId].addUses(weaponId)
 
 	def useWeapon(self, index):
 		if (self.weapons[index].uses >= 0):

@@ -12,13 +12,67 @@ from observe import Observer
 class Neighborhood(object):
 	def __init__(self):
 		self.w, self.h = randrange(4, 8), randrange(4, 8)
-		
+		self.posX, self.posY = randrange(0, self.w), randrange(0, self.h)
+
 		self.grid = [[0 for x in range(self.h)] for y in range(self.w)]
 	
 		for i in range (self.h):
 			for k in range (self.w):
 				self.grid[k][i] = House(k, i, randrange(0,2))
 
+	def getMonsters(self):
+		return self.grid[self.posW][self.posH].getMonsters()
+
+	def getFlag(self):
+		return self.grid[self.posW][self.posH].getFlag()
+
+	def changeXPos(self, xChange):
+		if (xChange + self.posX < self.w):
+			self.posX = self.posX + xChange
+			return True
+		return False
+
+	def changeYPos(self, yChange):
+		if (yChange + self.posY < self.h):
+			self.posY = self.posY + yChange
+			return True
+		return False
+
+	
+	def show(self):
+		output = []
+		for i in range (self.h):
+			temp = ""
+			for k in range(self.w):
+				if (self.grid[k][self.h - i - 1].getFlag() == 1):
+					temp = temp + " [ "
+					if ((self.h - i - 1) == self.posY and k == self.posX):
+						temp = temp + "X ] "
+					else:
+						temp = temp + "  ] "
+				elif (self.grid[k][self.h - i - 1].getFlag() == 2):
+					temp = temp + " [["
+
+					if ((self.h - i - 1) == self.posY and k == self.posX):
+						temp = temp + "X]] "
+					else:
+						temp = temp + "]] "
+
+
+				elif ((self.h - i - 1) == self.posY and k == self.posX):
+					temp = temp + "   X   "
+				else:
+					temp = temp + "       "
+			
+			output.append(temp)
+		return output
+
+
+	def getXPos(self):
+		return self.posX
+
+	def getYPos(self):
+		return self.posY
 ##########################################################################
 #This is the house class that inherits Observer. The house class is 
 #responsible for creating up to 10 monsters inside of it and randomizing
@@ -66,3 +120,11 @@ class House(Observer):
 		if (not alive):
 			self.monsters[index] = monster.Person();
 
+
+
+	def getMonsters(self):
+		return self.monsters
+
+
+	def getFlag(self):
+		return self.flag

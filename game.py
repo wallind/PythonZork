@@ -13,110 +13,20 @@ from random import*
 #neighborhood and also creates our pygame GUI.
 ####################################################################
 class Game(object):
-	"""sdgadhg"""
 	def __init__(self):
-		"""constructornfwerqfgwe"""
 		self.neighborHood = hood.Neighborhood()
 		self.player1 = player.Player()
-		
-		count = 0
-			
-		while(True):
-			try:
-				count = count + 1
-				self.position = self.neighborHood.grid[randrange(self.neighborHood.h)][randrange(self.neighborHood.w)]
-				if (self.position.flag != 1):
-					break
-				if (count == 400):
-					raise Exception("No Empty House")
-			except Exception:
-				self.neighborHood = hood.Neighborhood()
-	####################################################################
-	#This method is used to display the neighborhood with houses in the
-	#GUI. Boxes are houses and empty squares are not. X indicates
-	#the players location.
-	####################################################################
-	def show(self):
-		output = []
-		for i in range (self.neighborHood.h):
-			temp = ""
-			for k in range(self.neighborHood.w):
-				if ((self.neighborHood.grid[k][self.neighborHood.h - i - 1]).flag == 1):
-					temp = temp + " [ "
-					if ((self.neighborHood.h - i - 1) == self.position.y and k == self.position.x):
-						temp = temp + "X ] "
-					else:
-						temp = temp + "  ] "
-				elif ((self.neighborHood.h - i - 1) == self.position.y and k == self.position.x):
-					temp = temp + "   X   "
-				else:
-					temp = temp + "       "
-			output.append(temp)
-		return output
-
-	####################################################################
-	#This method allows you to move around the neighborhood in the GUI.
-	#This method also allows you to use the arrow keys to do such
-	#actions.
-	####################################################################
-	def move(self, direction):
-		if (direction == "up"):
-			try:
-				if (self.neighborHood.grid[self.position.x][self.position.y + 1].flag == 1):
-					self.position = self.neighborHood.grid[self.position.x][self.position.y + 1]
-				else:
-					self.position = self.neighborHood.grid[self.position.x][self.position.y + 1]
-					return ("No house here")
-			except IndexError:
-				return ("Cant move up")
-		if (direction == "down"):
-			try:
-				if ((self.position.y - 1) < 0):
-					raise IndexError()	
-				
-				if (self.neighborHood.grid[self.position.x][self.position.y - 1].flag == 1):
-					self.position = self.neighborHood.grid[self.position.x][self.position.y -1]
-				else:
-					self.position = self.neighborHood.grid[self.position.x][self.position.y - 1]
-					return ("No house here")
-			except IndexError:
-				return ("Cant move down")
-		if (direction == "left"):
-			try:
-				if ((self.position.x - 1) < 0):
-					raise IndexError()
-
-				if (self.neighborHood.grid[self.position.x - 1][self.position.y].flag == 1):
-					self.position = self.neighborHood.grid[self.position.x - 1][self.position.y]
-				else:
-					self.position = self.neighborHood.grid[self.position.x - 1][self.position.y]
-					return ("No house here")
-			except IndexError:
-				return ("Cant move left")
-		if (direction == "right"):	
-			try:
-				if (self.neighborHood.grid[self.position.x + 1][self.position.y].flag == 1):
-					self.position = self.neighborHood.grid[self.position.x + 1][self.position.y]
-				else:
-					self.position = self.neighborHood.grid[self.position.x + 1][self.position.y]
-					return ("No house here")
-			except IndexError:
-				return ("Cant move right")
-
-		return ""
-
 
 	#######################################################################
 	#This is the method that goes through a list of homes and the monsters
 	#in each home and then attacks each momnster within that house.
 	#######################################################################
-
-
-	#needs some work but got a start on it for the most part. also couldnt test it so theres
-	#most likely some errors in there, also need to get it to recognize which house it is in on the grid
 	def attack(self, weapon):
 		weaponNow = self.player1.weapons[weapon]
 	
+		if (weaponNow.uses == 0):
+			return
+
 		count = 0
 
 		for monster in self.position.monsters:
@@ -128,18 +38,37 @@ class Game(object):
 			count = count + 1
 
 		self.player1.useWeapon(weapon)
-		
-		if (weaponNow.uses <= 0):
-			del self.player1.weapons[weapon]
 
-	####################################################################
-	#This methodf checks to see if you are still alive and well. If you
-	#are not then game over, thanks for playing.
-	####################################################################
-	def isPlayerAlive(self):
-		if(player1.healthPoints <= 0):
-			print ("You are now dead, it was a good run")
-			system.exit()	
+	def getHouseData(self, field):
+		if (field == "monsters"):
+			return self.neighborHood.getMonsters()
+			
+		if (field == "flag"):
+			return self.neighborHood.getFlag()
+
+		if (field == "position"):
+			tempList = [self.neighborHood.getXPos(), self.neighborHood.getYPos()]
+			return tempList
+
+
+	def setPosition(self, xChange, yChange):
+		posXY = self.getHouseData("position")
+
+		if (posXY[0] + xChange < 0):
+			return ("Cant move there")
+
+		if (posXY[1] + yChange < 0):
+			return ("Cant move there")
+
+		if (not self.neighborHood.changeXPos(xChange)):
+			return ("Cant move there")
+
+		if (not self.neighborHood.changeYPos(yChange)):
+			return ("Cant move there")
+		
+		return ""
+
+
 
 ####################################################################
 #This class is what creates the pygame GUI
@@ -191,19 +120,19 @@ class GUI(object):
 						
 					elif (playing):
 						if (event.key == K_UP):
-							self.message = self.game.move("up")
+							self.message = self.game.setPosition(0, 1)
 							self.updateBoards("moving")
 			
 						if (event.key == K_DOWN):
-							self.message = self.game.move("down")
+							self.message = self.game.setPosition(0, -1)
 							self.updateBoards("moving")
 			
 						if (event.key == K_RIGHT):
-							self.message = self.game.move("right")
+							self.message = self.game.setPosition(1, 0)
 							self.updateBoards("moving")
 
 						if (event.key == K_LEFT):
-							self.message = self.game.move("left")
+							self.message = self.game.setPosition(-1, 0)
 							self.updateBoards("moving")
 
 
@@ -229,7 +158,8 @@ class GUI(object):
 					for monst in self.game.position.monsters:
 						if (type(monst) is not monster.Person):
 							done = False
-			
+		self.updateBoards("moving")
+		self.game.neighborHood.grid[self.game.position.x][self.game.position.y].flag = 2		
 
 	####################################################################
 	#This method updates the text being output corrctly
@@ -346,12 +276,13 @@ class GUI(object):
 	#This method updates the game board and sizes it correctly.
 	####################################################################
 	def updateGameBoard(self):
-		tempVar = self.game.show()
+		tempVar = self.game.neighborHood.show()
+
 		pos = 15
 
 		self.gameBoard.fill((255, 170, 0))
-		for str in tempVar:
-			label = self.myFont.render(str, 1, (0, 0, 0))
+		for string in tempVar:
+			label = self.myFont.render(string, 1, (0, 0, 0))
 			self.gameBoard.blit(label, (10, pos))
 			pos = pos + 20
 	
