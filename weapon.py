@@ -18,6 +18,11 @@ class Weapon(object):
 		
 		self.modifier = uniform(weaponModifiers[self.weaponType][0], weaponModifiers[self.weaponType][1])
 		self.uses = weaponModifiers[self.weaponType][2]
-		
+
+
+	########################################################################
+	#This method reduced the times a weapon can be used following its use
+	#on a monster.
+	########################################################################
 	def useWeapon(self):
 		self.uses = self.uses - 1

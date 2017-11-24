@@ -19,7 +19,10 @@ class Player(object):
 		for i in range(10):
 			temp = weapon.Weapon("error", 1)
 			self.weapons.append(temp)
-
+	########################################################################
+	#This method is used to keep track of how many uses a weapon has and if
+	#it is 0 or greater it then calls the useWeapon again.
+	########################################################################
 	def useWeapon(self, index):
 		if (self.weapons[index].uses >= 0):
 			self.weapons[index].useWeapon()

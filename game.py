@@ -106,14 +106,10 @@ class Game(object):
 		return ""
 
 
-	#######################################################################
+	########################################################################
 	#This is the method that goes through a list of homes and the monsters
 	#in each home and then attacks each momnster within that house.
-	#######################################################################
-
-
-	#needs some work but got a start on it for the most part. also couldnt test it so theres
-	#most likely some errors in there, also need to get it to recognize which house it is in on the grid
+	############################################################################
 	def attack(self, weapon):
 		weaponNow = self.player1.weapons[weapon]
 	
@@ -208,7 +204,10 @@ class GUI(object):
 
 
 
-
+	####################################################################
+	#This method is used to enter the house and start attacking the 
+	#monsters within it.
+	####################################################################
 	def enterHouse(self):
 		self.updateBoards("combat")
 		done = False	
@@ -228,8 +227,7 @@ class GUI(object):
 					
 					for monst in self.game.position.monsters:
 						if (type(monst) is not monster.Person):
-							done = False
-			
+							done = False	
 
 	####################################################################
 	#This method updates the text being output corrctly
