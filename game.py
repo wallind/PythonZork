@@ -29,7 +29,7 @@ class Game(object):
 
 		count = 0
 
-		for monster in self.position.monsters:
+		for monster in self.getHouseData("monsters"):
 			monster.getAttacked(weaponNow,self.player1.attackValue)			
 			
 			if (monster.healthPoints <= 0):
@@ -38,6 +38,15 @@ class Game(object):
 			count = count + 1
 
 		self.player1.useWeapon(weapon)
+
+
+	def getAttacked(self):
+		monsters = self.getHouseData("monsters")
+		for monster in monsters:
+			if (not self.player1.getAttacked(monster.getAttackValue())):
+				return False
+		
+		return True
 
 	def getHouseData(self, field):
 		if (field == "monsters"):
@@ -49,6 +58,10 @@ class Game(object):
 		if (field == "position"):
 			tempList = [self.neighborHood.getXPos(), self.neighborHood.getYPos()]
 			return tempList
+
+
+	def setFlag(self, flag):
+		self.neighborHood.setFlag(flag)
 
 
 	def setPosition(self, xChange, yChange):
@@ -115,8 +128,9 @@ class GUI(object):
 							playing = True
 							self.updateBoards("moving")
 
-						elif (self.game.position.flag == 1):
-							self.enterHouse()
+						elif (self.game.getHouseData("flag") == 1):
+							if (self.enterHouse()):
+								return
 						
 					elif (playing):
 						if (event.key == K_UP):
@@ -144,25 +158,36 @@ class GUI(object):
 	def enterHouse(self):
 		self.updateBoards("combat")
 		done = False	
+		playerAlive = True
 		while (not done):
 			for event in pygame.event.get():
 				if (event.type == KEYDOWN):
 					done = True
 					if (event.key == K_0):
 						self.game.attack(0)
+						playerAlive = self.game.getAttacked()
 					if (event.key == K_1):
 						self.game.attack(1)
+						playerAlive = self.game.getAttacked()
 					if (event.key == K_2):
 						self.game.attack(2)
+						playerAlive = self.game.getAttacked()
 					if (event.key == K_3):
 						self.game.attack(3)
+						playerAlive = self.game.getAttacked()
 					self.updateBoards("combat")
-					
-					for monst in self.game.position.monsters:
+				
+
+					if (not playerAlive):
+						self.updateBoards("gameover")
+						return True
+				
+					for monst in self.game.getHouseData("monsters"):
 						if (type(monst) is not monster.Person):
 							done = False
 		self.updateBoards("moving")
-		self.game.neighborHood.grid[self.game.position.x][self.game.position.y].flag = 2		
+		self.game.setFlag(2)
+		return False
 
 	####################################################################
 	#This method updates the text being output corrctly
@@ -176,13 +201,13 @@ class GUI(object):
 			temp = "Welcome to the NeighborHood"
 			label = self.myFont.render(temp, 1, (255, 255, 255))
 			self.textBoard.blit(label, (20, 15))
-			temp = "Move around the neighborhood using the arrow keys and"
+			temp = "Move around the neighborhood using the arrow keys and kill"
 			label = self.myFont.render(temp, 1, (255, 255, 255))
 			self.textBoard.blit(label, (15, 50))
-			temp = "kill all the monsters. Once a house has been cleared"
+			temp = "all the monsters. Once a house has been cleared the icon"
 			label = self.myFont.render(temp, 1, (255, 255, 255))
 			self.textBoard.blit(label, (15, 70))
-			temp = "The icon will change from [    ] to [[   ]]"
+			temp = "will change from [    ] to [[   ]]"
 			label = self.myFont.render(temp, 1, (255, 255, 255))
 			self.textBoard.blit(label, (15, 90))
 			temp = "Press Enter to start"
@@ -234,17 +259,19 @@ class GUI(object):
 			
 			pos = 110
 			
+			monstersTemp = self.game.getHouseData("monsters")
+
 			for index in range(10):	
-				if (index < len(self.game.position.monsters)):
-					temp = str(type(self.game.position.monsters[index]))
+				if (index < len(monstersTemp)):
+					temp = str(type(monstersTemp[index]))
 					temp = temp[16:-2]
 			
 					label = self.myFont.render(temp, 1, (255, 255, 255))
 					self.textBoard.blit(label, (15, pos))
 
-					if (type(self.game.position.monsters[index]) is not monster.Person):	
-						temp ="| " + str(int(self.game.position.monsters[index].healthPoints))
-					
+					if (type(monstersTemp[index]) is not monster.Person):	
+						temp ="| " + str(int(monstersTemp[index].healthPoints))
+
 					else:
 						temp = "|"
 						

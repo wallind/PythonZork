@@ -43,6 +43,9 @@ class Monster(Observable):
 				self.healthPoints = self.healthPoints - (weapon.modifier * attackVal)
 
 
+	def getAttackValue(self):
+		return randrange(self.attackRange[0], self.attackRange[1])
+
 ########################################################################
 #Child classes of Monster. They Set each monster to its specific type.
 ########################################################################
@@ -51,7 +54,7 @@ class Person(Monster):
 	def __init__(self):
 		"""Person Constructor."""
 		super(Person, self).__init__()
-		self.attackRange = [-2, -2]
+		self.attackRange = [-4, -2]
 		self.healthPoints = 100
 
 class Zombie(Monster):
@@ -76,7 +79,7 @@ class Ghoul(Monster):
 	def __init__(self):
 		"""Ghoul Constructor."""
 		super(Ghoul, self).__init__()
-		self.attackRange = [15, 31]
+		self.attackRange = [13, 25]
 		self.healthPoints = randrange(40, 81)
 
 class Werewolf(Monster):
@@ -84,5 +87,5 @@ class Werewolf(Monster):
 	def __init__(self):
 		"""Werewolf."""
 		super(Werewolf, self).__init__()
-		self.attackRange = [0, 41]
+		self.attackRange = [0, 29]
 		self.healthPoints = 200

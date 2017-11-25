@@ -32,3 +32,12 @@ class Player(object):
 	def useWeapon(self, index):
 		if (self.weapons[index].uses >= 0):
 			self.weapons[index].useWeapon()
+
+
+	def getAttacked(self, attackVal):
+		self.hp = self.hp - attackVal
+		if (self.hp <= 0):
+			return False
+		
+		else:
+			return True

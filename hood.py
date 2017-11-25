@@ -21,10 +21,14 @@ class Neighborhood(object):
 				self.grid[k][i] = House(k, i, randrange(0,2))
 
 	def getMonsters(self):
-		return self.grid[self.posW][self.posH].getMonsters()
+		return self.grid[self.posX][self.posY].getMonsters()
+
+	def setFlag(self, flag):
+		self.grid[self.posX][self.posY].setFlag(flag)
+
 
 	def getFlag(self):
-		return self.grid[self.posW][self.posH].getFlag()
+		return self.grid[self.posX][self.posY].getFlag()
 
 	def changeXPos(self, xChange):
 		if (xChange + self.posX < self.w):
@@ -56,7 +60,7 @@ class Neighborhood(object):
 					if ((self.h - i - 1) == self.posY and k == self.posX):
 						temp = temp + "X]] "
 					else:
-						temp = temp + "]] "
+						temp = temp + " ]] "
 
 
 				elif ((self.h - i - 1) == self.posY and k == self.posX):
@@ -128,3 +132,6 @@ class House(Observer):
 
 	def getFlag(self):
 		return self.flag
+
+	def setFlag(self, flag):
+		self.flag = flag
