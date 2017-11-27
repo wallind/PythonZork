@@ -42,11 +42,10 @@ class Game(object):
 
 	def getAttacked(self):
 		monsters = self.getHouseData("monsters")
-		for monster in monsters:
-			if (not self.player1.getAttacked(monster.getAttackValue())):
-				return False
 		
-		return True
+		for monst in monsters:
+			print (monst.getAttackValue())
+			self.player1.getAttacked(monst.getAttackValue())
 
 	def getHouseData(self, field):
 		if (field == "monsters"):
@@ -82,14 +81,20 @@ class Game(object):
 		return ""
 
 
+	def gameStatus(self):
+		if (self.player1.getHealthPoints() <= 0):
+			return False
+		
+		return True
+
 
 ####################################################################
 #This class is what creates the pygame GUI
 ####################################################################
 class GUI(object):
 	"""Constructor for GUI"""
-	def __init__(self, g):
-		self.game = g
+	def __init__(self):
+		self.game = Game()
 		self.message = ""
 
 		pygame.init()
@@ -106,8 +111,6 @@ class GUI(object):
 		self.mainBoard = pygame.Surface(self.screen.get_size())
 		self.gameBoard = pygame.Surface((self.gameBoardWidth, self.gameBoardHeight))	
 		self.textBoard = pygame.Surface((500, self.mainBoardHeight))
-
-		self.clock = pygame.time.Clock()
 
 		self.updateBoards("init")
 
@@ -129,8 +132,12 @@ class GUI(object):
 							self.updateBoards("moving")
 
 						elif (self.game.getHouseData("flag") == 1):
-							if (self.enterHouse()):
-								return
+							
+							self.enterHouse()
+							if (not self.game.gameStatus()):
+								self.updateBoards("gameover")
+								self.game = Game()
+								playing = False
 						
 					elif (playing):
 						if (event.key == K_UP):
@@ -165,28 +172,27 @@ class GUI(object):
 					done = True
 					if (event.key == K_0):
 						self.game.attack(0)
-						playerAlive = self.game.getAttacked()
+						self.game.getAttacked()
 					if (event.key == K_1):
 						self.game.attack(1)
-						playerAlive = self.game.getAttacked()
+						self.game.getAttacked()
 					if (event.key == K_2):
 						self.game.attack(2)
-						playerAlive = self.game.getAttacked()
+						self.game.getAttacked()
 					if (event.key == K_3):
 						self.game.attack(3)
-						playerAlive = self.game.getAttacked()
+						self.game.getAttacked()
 					self.updateBoards("combat")
 				
 
-					if (not playerAlive):
-						self.updateBoards("gameover")
-						return True
+					if (not self.game.gameStatus()):
+						return 
 				
 					for monst in self.game.getHouseData("monsters"):
 						if (type(monst) is not monster.Person):
 							done = False
-		self.updateBoards("moving")
 		self.game.setFlag(2)
+		self.updateBoards("moving")
 		return False
 
 	####################################################################
@@ -215,33 +221,30 @@ class GUI(object):
 			self.textBoard.blit(label, (15, 200))
 		
 		elif (state == "moving"):
-			temp = "Use the arrow keys to move"
+			temp = "Use the arrow keys to move around the neighborhood. "
 			label = self.myFont.render(temp, 1, (255, 255, 255))
 			self.textBoard.blit(label, (15, 20))
-			temp = "          ^"
-			label = self.myFont.render(temp, 1, (255, 255, 255))
-			self.textBoard.blit(label, (15, 50))
-			temp = "          |"
-			label = self.myFont.render(temp, 1, (255, 255, 255))
-			self.textBoard.blit(label, (15, 70))
-			temp = "       <--|-->"
-			label = self.myFont.render(temp, 1, (255, 255, 255))
-			self.textBoard.blit(label, (15, 90))
-			temp = "          |"
-			label = self.myFont.render(temp, 1, (255, 255, 255))
-			self.textBoard.blit(label, (15, 110))
-			temp = "          v"
-			label = self.myFont.render(temp, 1, (255, 255, 255))
-			self.textBoard.blit(label, (15, 130))
 			temp = "Press Enter to go into a"
 			label = self.myFont.render(temp, 1, (255, 255, 255))
-			self.textBoard.blit(label, (15, 200))
+			self.textBoard.blit(label, (15, 70))
 			temp = "house and engage the monsters"
 			label = self.myFont.render(temp, 1, (255, 255, 255))
-			self.textBoard.blit(label, (15, 220))
+			self.textBoard.blit(label, (15, 90))
 			temp = "Console: " + self.message
 			label = self.myFont.render(temp, 1, (255, 255, 255))
-			self.textBoard.blit(label, (15, 255))
+			self.textBoard.blit(label, (15, 200))
+			
+			temp = "Player HP: " + str(self.game.player1.getHealthPoints()) + "   ["
+			
+			for bar in range(30):
+				if (bar * 5 < self.game.player1.getHealthPoints()):
+					temp = temp + "|"
+			
+				else:
+					temp = temp + " "
+			temp = temp + "]"
+			label = self.myFont.render(temp, 1, (255, 255, 255))
+			self.textBoard.blit(label, (15, 260))
 
 		elif (state == "combat"):
 			temp = "Press the corresponding number"
@@ -289,17 +292,28 @@ class GUI(object):
 					label = self.myFont.render(temp, 1, (255, 255, 255))
 					self.textBoard.blit(label, (375, pos))
 				pos = pos + 15
-			temp = "Player HP: " + str(self.game.player1.hp) + "   ["
+			temp = "Player HP: " + str(self.game.player1.getHealthPoints()) + "   ["
 			
 			for bar in range(30):
-				if (bar * 5 < self.game.player1.hp):
+				if (bar * 5 < self.game.player1.getHealthPoints()):
 					temp = temp + "|"
 			
 				else:
 					temp = temp + " "
 			temp = temp + "]"
 			label = self.myFont.render(temp, 1, (255, 255, 255))
-			self.textBoard.blit(label, (15, 268))
+			self.textBoard.blit(label, (15, 260))
+
+		elif(state == "gameover"):
+			temp = ":(      YOU HAVE DIED!!    :("
+			label = self.myFont.render(temp, 1, (255, 255, 255))
+			self.textBoard.blit(label, (15, 20))
+			temp = "Thanks for playing."
+			label = self.myFont.render(temp, 1, (255, 255, 255))
+			self.textBoard.blit(label, (15, 200))
+			temp = "Press Enter to Restart"
+			label = self.myFont.render(temp, 1, (255, 255, 255))
+			self.textBoard.blit(label, (15, 240))
 
 
 	####################################################################
@@ -325,9 +339,7 @@ class GUI(object):
 	####################################################################
 	def updateBoards(self, textState):
 		self.updateTextBoard(textState)
-		
-		if (textState == "moving" or "init"):
-			self.updateGameBoard()	
+		self.updateGameBoard()		
 
 		self.mainBoard.fill((255, 170, 0))
 

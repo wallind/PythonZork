@@ -12,7 +12,5 @@ import monster
 #the game is played through.
 ########################################################################
 if __name__ == "__main__":
-	testGame = Game()
-	testGUI = GUI(testGame)
+	testGUI = GUI()
 	testGUI.run()
-	m = monster.Zombie()

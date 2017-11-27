@@ -12,7 +12,7 @@ from random import*
 ########################################################################
 class Player(object):
 	def __init__(self):
-		self.hp = randrange(100, 126)
+		self.healthPoints = 150
 		self.attackValue = randrange(10, 21)
 		self.weapons = []
 
@@ -35,9 +35,10 @@ class Player(object):
 
 
 	def getAttacked(self, attackVal):
-		self.hp = self.hp - attackVal
-		if (self.hp <= 0):
-			return False
-		
-		else:
-			return True
+		self.healthPoints = self.healthPoints - attackVal
+
+		if (self.healthPoints > 150):
+			self.healthPoints = 150
+
+	def getHealthPoints(self):
+		return self.healthPoints
