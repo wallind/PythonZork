@@ -39,7 +39,9 @@ class Game(object):
 
 		self.player1.useWeapon(weapon)
 
-
+	########################################################################
+	#This is the method that allows the monsters to attack you
+	#######################################################################
 	def getAttacked(self):
 		monsters = self.getHouseData("monsters")
 		for monster in monsters:
@@ -47,7 +49,10 @@ class Game(object):
 				return False
 		
 		return True
-
+	########################################################################
+	#This is the method that tells you if there are monsters in the 
+	#specific house you are at
+	#######################################################################
 	def getHouseData(self, field):
 		if (field == "monsters"):
 			return self.neighborHood.getMonsters()
@@ -59,11 +64,16 @@ class Game(object):
 			tempList = [self.neighborHood.getXPos(), self.neighborHood.getYPos()]
 			return tempList
 
-
+	########################################################################
+	#This is a setter that sets a flag on a house
+	#######################################################################
 	def setFlag(self, flag):
 		self.neighborHood.setFlag(flag)
 
-
+	########################################################################
+	#This is the method that sets the position you are at and informs you
+	#if you cannot move in a certain direction.
+	#######################################################################
 	def setPosition(self, xChange, yChange):
 		posXY = self.getHouseData("position")
 

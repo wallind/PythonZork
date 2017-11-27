@@ -43,6 +43,9 @@ class Monster(Observable):
 				self.healthPoints = self.healthPoints - (weapon.modifier * attackVal)
 
 
+	########################################################################
+	#Getter method for the attack value
+	#######################################################################
 	def getAttackValue(self):
 		return randrange(self.attackRange[0], self.attackRange[1])
 

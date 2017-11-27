@@ -20,29 +20,45 @@ class Neighborhood(object):
 			for k in range (self.w):
 				self.grid[k][i] = House(k, i, randrange(0,2))
 
+	#######################################################################
+	#Getter method for the monsters
+	#######################################################################
 	def getMonsters(self):
 		return self.grid[self.posX][self.posY].getMonsters()
 
+	#######################################################################
+	#Setter method for the flag
+	#######################################################################
 	def setFlag(self, flag):
 		self.grid[self.posX][self.posY].setFlag(flag)
 
-
+	#######################################################################
+	#Getter method for the flag
+	#######################################################################
 	def getFlag(self):
 		return self.grid[self.posX][self.posY].getFlag()
 
+	#######################################################################
+	#Changes the postion for the X position on the grid
+	#######################################################################	
 	def changeXPos(self, xChange):
 		if (xChange + self.posX < self.w):
 			self.posX = self.posX + xChange
 			return True
 		return False
 
+	#######################################################################
+	#Changes the position for the Y position on the grid
+	#######################################################################
 	def changeYPos(self, yChange):
 		if (yChange + self.posY < self.h):
 			self.posY = self.posY + yChange
 			return True
 		return False
 
-	
+	########################################################################
+	#This is the method that shows you where you are at in the neighborhood
+	########################################################################
 	def show(self):
 		output = []
 		for i in range (self.h):
@@ -71,12 +87,18 @@ class Neighborhood(object):
 			output.append(temp)
 		return output
 
-
+	#######################################################################
+	#Getter for X position
+	#######################################################################
 	def getXPos(self):
 		return self.posX
 
+	#######################################################################
+	#Getter for Y position
+	#######################################################################
 	def getYPos(self):
 		return self.posY
+
 ##########################################################################
 #This is the house class that inherits Observer. The house class is 
 #responsible for creating up to 10 monsters inside of it and randomizing
@@ -125,13 +147,20 @@ class House(Observer):
 			self.monsters[index] = monster.Person();
 
 
-
+	#######################################################################
+	#Getter for the monsters
+	#######################################################################
 	def getMonsters(self):
 		return self.monsters
 
-
+	#######################################################################
+	#Getter flag for the house
+	#######################################################################
 	def getFlag(self):
 		return self.flag
 
+	#######################################################################
+	#Setter flag for the house
+	#######################################################################
 	def setFlag(self, flag):
 		self.flag = flag
