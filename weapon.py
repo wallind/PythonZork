@@ -24,5 +24,8 @@ class Weapon(object):
 	def useWeapon(self):
 		self.uses = self.uses - 1
 
+	########################################################################
+	#This is the method that gives a weapon more uses
+	#######################################################################
 	def addUses(self, weaponId):
 		self.uses = self.uses + self.weaponModifiers[self.weaponType][2]

@@ -34,6 +34,9 @@ class Player(object):
 			self.weapons[index].useWeapon()
 
 
+	########################################################################
+	#Getter method for getting attacked
+	#######################################################################
 	def getAttacked(self, attackVal):
 		self.healthPoints = self.healthPoints - attackVal
 
